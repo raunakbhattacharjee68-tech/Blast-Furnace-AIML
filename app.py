@@ -4,23 +4,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
 st.set_page_config(
     page_title="Blast Furnace Dashboard",
     page_icon="🔥",
     layout="wide"
 )
 
-# -----------------------------
-# LOAD DATA
-# -----------------------------
 df = pd.read_csv("channeling_detection_results.csv")
 
-# -----------------------------
-# SIDEBAR
-# -----------------------------
 st.sidebar.title("🔥 Navigation")
 
 page = st.sidebar.radio(
@@ -32,9 +23,6 @@ page = st.sidebar.radio(
     ]
 )
 
-# -----------------------------
-# BASIC STATS
-# -----------------------------
 total = len(df)
 channeling = (df['Channeling_Flag'] == 1).sum()
 normal = total - channeling
@@ -51,12 +39,9 @@ features = [
 
 means = df.groupby('Channeling_Flag')[features].mean()
 
-# =============================
-# OVERVIEW PAGE
-# =============================
 if page == "Overview":
 
-    st.title("🔥 Blast Furnace Channeling Detection Dashboard")
+    st.title(" Blast Furnace Channeling Detection Dashboard")
 
     st.success("""
     Key Findings
@@ -68,7 +53,6 @@ if page == "Overview":
     • K_MU increased significantly
     """)
 
-    # KPI CARDS
     col1, col2, col3, col4 = st.columns(4)
 
     col1.metric("Total Records", total)
@@ -79,7 +63,7 @@ if page == "Overview":
     st.divider()
 
     # CLUSTER DISTRIBUTION
-    st.subheader("📊 Cluster Distribution")
+    st.subheader("Cluster Distribution")
 
     cluster_counts = df['Channeling_Flag'].value_counts()
 
@@ -95,7 +79,7 @@ if page == "Overview":
     st.divider()
 
     # FEATURE COMPARISON
-    st.subheader("📈 Mean Feature Comparison")
+    st.subheader("Mean Feature Comparison")
 
     fig = px.bar(
         means.T,
@@ -107,19 +91,16 @@ if page == "Overview":
 
     st.divider()
 
-    st.subheader("📋 Cluster Statistics")
+    st.subheader("Cluster Statistics")
 
     st.dataframe(
         means.round(3),
         use_container_width=True
     )
 
-# =============================
-# FEATURE ANALYSIS PAGE
-# =============================
 elif page == "Feature Analysis":
 
-    st.title("📈 Feature Analysis")
+    st.title("Feature Analysis")
 
     feature = st.selectbox(
         "Select Feature",
@@ -128,7 +109,6 @@ elif page == "Feature Analysis":
 
     col1, col2 = st.columns(2)
 
-    # Histogram
     with col1:
 
         st.subheader("Distribution")
@@ -145,7 +125,6 @@ elif page == "Feature Analysis":
 
         st.pyplot(fig)
 
-    # Boxplot
     with col2:
 
         st.subheader("Normal vs Channeling")
@@ -165,12 +144,9 @@ elif page == "Feature Analysis":
 
         st.pyplot(fig)
 
-# =============================
-# CHANNELING EVENTS PAGE
-# =============================
 elif page == "Channeling Events":
 
-    st.title("🚨 Potential Channeling Events")
+    st.title("Potential Channeling Events")
 
     anomalies = df[
         df['Channeling_Flag'] == 1
@@ -191,7 +167,7 @@ elif page == "Channeling Events":
     csv = anomalies.to_csv(index=False)
 
     st.download_button(
-        label="📥 Download Channeling Events",
+        label="Download Channeling Events",
         data=csv,
         file_name="channeling_events.csv",
         mime="text/csv"
