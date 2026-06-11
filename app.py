@@ -6,13 +6,12 @@ import plotly.express as px
 
 st.set_page_config(
     page_title="Blast Furnace Dashboard",
-    page_icon="🔥",
     layout="wide"
 )
 
 df = pd.read_csv("channeling_detection_results.csv")
 
-st.sidebar.title("🔥 Navigation")
+st.sidebar.title("Navigation")
 
 page = st.sidebar.radio(
     "Go To",
@@ -74,7 +73,7 @@ if page == "Overview":
         title="Normal vs Channeling Records"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     st.divider()
 
@@ -87,7 +86,7 @@ if page == "Overview":
         title="Feature Comparison"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     st.divider()
 
@@ -95,7 +94,7 @@ if page == "Overview":
 
     st.dataframe(
         means.round(3),
-        use_container_width=True
+        width='stretch'
     )
 
 elif page == "Feature Analysis":
@@ -161,7 +160,7 @@ elif page == "Channeling Events":
 
     st.dataframe(
         anomalies,
-        use_container_width=True
+        width='stretch'
     )
 
     csv = anomalies.to_csv(index=False)
